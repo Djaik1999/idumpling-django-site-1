@@ -1,0 +1,166 @@
+{% extends "dumpling/base.html" %}
+
+{% block title %}Profile Page{% endblock title %}
+
+{% block main%}
+
+<!-- NEW Version-->
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-lg-3 border-right">
+
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="{{user.profile.photo.url}}">
+                <span class="font-weight-bold">{{user.username}}
+                    <!--"Chort" status-->
+                        {% if user.profile.chort_status %}
+                            {% if user.profile.chort_status > 10 %}
+                                <span style="color: rgba(255, 0, 21, 1)">ЧОРТ</span>
+                            {% elif user.profile.chort_status > 6 %}
+                                <span style="color: rgba(255, 0, 21, 0.75)">ЧОРТ</span>
+                            {% elif user.profile.chort_status > 3 %}
+                                <span style="color: rgba(255, 0, 21, 0.5)">ЧОРТ</span>
+                            {% else %}
+                                <span style="color: rgba(255, 0, 21, 0.2)">ЧОРТ</span>
+                            {% endif %}
+                        {% endif %}
+                </span><span class="text-black-50">{{user.email}}</span>
+                {% if user.is_superuser %}
+                <span class="badge bg-danger"> Administrator</span>
+                {% elif user.is_staff %}
+                <span class="badge bg-success"> Moderator</span>
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="col-lg-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile Settings</h4>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if user_form.errors %}
+                    <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show">
+                        {% for key, value in user_form.errors.items %}
+                            <strong class="mx-2">{{ value }}</strong>
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <div class="row mt-2">
+                        <div class="col-md-12 mb-2"><label required=False class="labels">Логин</label>
+                            {{ user_form.username }}
+                        </div>
+                        <div class="col-md-6 mb-2"><label class="labels">Имя</label>{{ profile_form.first_name }}</div>
+                        <div class="col-md-6 mb-2"><label class="labels">Фамилия</label>{{ profile_form.last_name }}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Email</label>{{ user_form.email }}</div>
+                        <div class="row mt-3">
+                            <div class="col-md-6 mb-2"><label class="labels">Номер кредитной карты</label>
+                                {{ profile_form.credit_card_number }}
+                            </div>
+                            <div class="col-md-6 mb-2"><label class="labels">CVC код</label>{{ profile_form.cvc_code }}
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3"><label class="labels">Адрес проживания</label>
+                            {{ profile_form.address }}
+                        </div>
+                        <div class="col-md-12 mb-3"><label class="labels">Где лежит ключ от квартиры/дома</label>
+                            {{ profile_form.where_key }}
+                        </div>
+                        <div class=" mb-2"><label class="labels">Номер паспорта</label>
+                            {{ profile_form.passport_number }}
+                        </div>
+                        <div class="col-md-12 mb-2"><label required=False class="labels">О себе</label>
+                            {{ profile_form.bio }}
+                        </div>
+                        <div class="col-md-12 mb-2"><label required=False class="labels">URL</label>
+                            {{ profile_form.slug }}
+                        </div>
+
+                        <div class="col-md-12 mb-2" required=False><label class="labels">Сменить фотографию</label>
+                            {{ profile_form.photo }}
+                        </div>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+                        <button class="btn btn-dark profile-button" type="reset">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <h6 class="display-6">Yours comments</h6>
+                </div>
+                <br>
+
+                {% for comment in page_obj %}
+                <div class="d-flex">
+                    <div class="flex-grow-1 ms-3">
+                        <h5><a href="/dumpling/{{comment.dumpling.slug}}">{{comment.dumpling}}</a>
+                            <small class="text-muted">
+                                <i>{{comment.time_create}}</i>
+                            </small>
+                        </h5>
+                        <p>{{comment.comment}}</p>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+
+                <nav class="d-flex justify-content-center">
+                    <ul class="pagination ">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.previous_page_number}}">
+                                    <span class="page-link">&lt</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&lt</span>
+                            </li>
+                        {% endif %}
+
+                         {% for i in page_range %}
+                            {% if i != page_obj.paginator.ELLIPSIS %}
+                                <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                                    <a href="?page={{i}}" class="page-link">{{i}}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                   <span class="page-link">{{i}}</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{page_obj.next_page_number}}">
+                                    <span class="page-link">&gt</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&gt</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

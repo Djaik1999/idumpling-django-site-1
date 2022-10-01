@@ -1,0 +1,67 @@
+{% extends 'dumpling/base.html' %}
+
+{% block top_layer%}{% endblock top_layer %}
+
+{% block main %}
+<div class="form-content my-3 p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0 rounded-lg mt-0 mb-5">
+                    <div class="card-header justify-content-center">
+                        <h3 class="font-weight-light my-4 text-center">Create Account</h3>
+                    </div>
+
+<!--                    TWO TYPES TO SHOW ERROR MESSAGE -->
+<!--                    FIRST:-->
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show" role="alert">
+                        <div id="form_errors">
+                            {% for key, value in form.errors.items %}
+                                <i class="bi-exclamation-octagon-fill me-1"></i><strong>{{ value }}</strong>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <form method="POST", enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            {% for f in form %}
+                                <p>{{ f }}</p>
+
+                            {% if f.required %}
+                                <p>*</p>    НЕ РАБОТАЕТ, НО НУЖНО РЕАЛИЗОВАТЬ
+                            {% endif %}
+
+                            {% if f.name == 'password' %}
+
+                            {% endif %}
+<!--                            SECOND:-->
+                                <div class="form-error">{{ f.errors }}</div>
+                            {% endfor %}
+
+                            <div class="form-group mt-4 mb-0">
+                                <button type="submit" class="col-md-12 btn btn-dark">Sign Up</button><br><br>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <div class="small">
+                            <a href="{% url 'login' %}">Have an account? Go to Sign in</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

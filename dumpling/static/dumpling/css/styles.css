@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'MeriendaOne';
+    src: local('MeriendaOne'),
+         url("fonts/MeriendaOne-Regular.ttf") format("truetype");
+}
+
+.navbar-brand {
+    font-family: MeriendaOne;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+.modal-open {
+    padding-right: 0px !important;
+}
+
+.alert {
+    margin-bottom: 0px;
+}
+
+.ad {
+    border: 2px solid #CC0000;
+    border-radius: 12px;
+    position: fixed;
+    z-index: 5;
+    max-width: 500px;
+    background-color: #212529;
+    color: #fff;
+    padding: 1rem 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.background {
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+}
+
+.alert-login {
+    position: fixed;
+    z-index: 5;
+    max-width: 500px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    border-radius: 12px;
+}
+

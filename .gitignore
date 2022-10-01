@@ -1,0 +1,7 @@
+.env
+
+ipelmen_cache/
+
+*/__pycache__/
+
+dumpling/tests.py

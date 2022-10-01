@@ -1,0 +1,267 @@
+{% extends 'dumpling/base.html' %}
+{% load cache %}
+
+{% block main %}
+<div class="container-fluid px-0">
+    <div class="row justify-content-center gx-0">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-0 mb-5">
+
+                {% if dumpling.photo %}
+                <img src="{{dumpling.photo.url}}" alt="" style="width: 100%">
+                {% endif %}
+
+                <table class="table mb-0">
+                    <tbody>
+                    <tr class="table-primary">
+                        <td>Название</td>
+                        <td>{{ dumpling.name }}</td>
+                    </tr>
+                    <tr class="table-info">
+                        <td>Мясо</td>
+                        <td><a href="/dumplings/list?meat={{ dumpling.meat.id }}">{{ dumpling.meat }}</a></td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td>Вкусный?</td>
+                        <td><a href="/dumplings/list?tasty={{ dumpling.tasty.id }}">{{ dumpling.tasty }}</a></td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Размер</td>
+                        <td><a href="/dumplings/list?size={{ dumpling.size.id }}">{{ dumpling.size }}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <!-- List of comments -->
+
+                <section style="background-color: #e7effd;">
+                    <div class="container my-5 py-5 text-dark">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-12 col-lg-10 col-xl-8">
+                                <h4 class="text-center mb-4 pb-2">Comment{{ comments.count|pluralize }}
+                                    <span class="badge bg-dark ml-2">{{ comments.count }}</span>
+
+
+                                </h4>
+                            </div>
+                            <div class="col-md-11 col-lg-9 col-xl-7">
+
+                                {% if user.is_authenticated %}
+                                <!-- Form to leave comment -->
+                                <div class="d-flex flex-start mb-4">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="{{user.profile.photo.url}}" alt="avatar" width="65"
+                                         height="65"/>
+                                    <div class="card w-100">
+                                        <div class="card-body p-4">
+                                            <div class="">
+                                                <h5>{{user}}</h5>
+
+                                                {% if form.errors %}
+                                                <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show">
+                                                    {% for key, value in user_form.errors.items %}
+                                                    <strong class="mx-2">{{ value }}</strong>
+                                                    {% endfor %}
+                                                    <button type="button" class="btn-close"
+                                                            data-bs-dismiss="alert"></button>
+                                                </div>
+                                                {% endif %}
+
+
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <p class="small"></p>
+                                                    <div class="form-error">{{ form.non_field_errors }}</div>
+                                                    <p>
+
+                                                    <p>
+                                                        {{ form.comment }}
+                                                    </p>
+                                                    <div class="form-error">{{ f.errors }}</div>
+
+                                                    </p>
+
+                                                    <div class="float-end mt-2 pt-1">
+                                                        <button type="submit" class="btn btn-primary btn-sm">Post
+                                                            comment
+                                                        </button>
+                                                        <button type="reset"
+                                                                class="btn btn-outline-primary btn-sm">Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+                                {% if comments %}
+                                {% for comment in page_obj %}
+                                <div class="d-flex flex-start mb-4">
+                                    <div id="profileModal{{comment.author.username}}" class="modal fade">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{comment.author.username}}</h5>
+                                                    <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row ">
+                                                        <div class="col-12">
+                                                            <div class="d-flex text-black">
+                                                                <div class="flex-shrink-0">
+                                                                    <img src="{{comment.author.profile.photo.url}}"
+                                                                         class="img-fluid"
+                                                                         alt="{{comment.author.username}}'s avatar"
+                                                                         style="border-radius: 10px; width: 180px">
+                                                                </div>
+                                                                <div class="flex-grow-1 ms-3">
+                                                                    <h5 class="mb-1">{{comment.author.username}}</h5>
+                                                                    <p class="mb-2 pb-1" style="color: #2b2a2a;">
+                                                                        {{comment.author.profile.address}}
+                                                                    </p>
+                                                                    <hr>
+                                                                    <p>Name: {{comment.author.profile.first_name}}</p>
+                                                                    <p>Surname: {{comment.author.profile.last_name}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <a href="#profileModal{{comment.author.username}}" data-bs-toggle="modal">
+                                        <img class="rounded-circle shadow-1-strong me-3"
+                                             src="{{comment.author.profile.photo.url}}" alt="avatar" width="65"/>
+                                    </a>
+
+
+                                    <div class="card w-100">
+                                        <div class="card-body p-4">
+                                            <div class="">
+
+
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <p class="mb-0">
+                                                    <h5 style="margin-right: 4px">{{comment.author}} </h5>
+
+                                                    {% if comment.author.is_superuser %}
+                                                    <span class="badge bg-danger"> Administrator</span>
+                                                    {% elif comment.author.is_staff %}
+                                                    <span class="badge bg-success"> Moderator</span>
+                                                    {% endif %}
+
+                                                    <!--"Chort" status-->
+                                                    {% if comment.author.profile.chort_status %}
+                                                        {% if comment.author.profile.chort_status > 10 %}
+                                                            <span class="ms-2" style="color: rgba(255, 0, 21, 1)">ЧОРТ</span>
+                                                        {% elif comment.author.profile.chort_status > 6 %}
+                                                            <span class="ms-2" style="color: rgba(255, 0, 21, 0.75)">ЧОРТ</span>
+                                                        {% elif comment.author.profile.chort_status > 3 %}
+                                                            <span class="ms-2" style="color: rgba(255, 0, 21, 0.5)">ЧОРТ</span>
+                                                        {% else %}
+                                                            <span class="ms-2" style="color: rgba(255, 0, 21, 0.2)">ЧОРТ</span>
+                                                        {% endif %}
+                                                    {% endif %}
+
+                                                    </p>
+                                                    {% if comment.author == user%}
+                                                    <a href="{% url 'comment_update' comment.id %}?next={{ request.path }}"
+                                                       class="link-muted"><i
+                                                            class="fas fa-pencil-alt ms-2"></i></a>
+                                                    <a href="{% url 'comment_delete' comment.id %}?next={{ request.path }}"
+                                                       class="link-muted"><i
+                                                            class="fas fa-trash-alt ms-2"></i></a>
+                                                    {% elif user.is_superuser %}
+                                                    <a href="{% url 'comment_delete' comment.id %}?next={{ request.path }}"
+                                                       class="link-muted"><i
+                                                            class="fas fa-trash-alt ms-2"></i></a>
+                                                    <a href="{% url 'comment_ban' comment.id %}?next={{ request.path }}"
+                                                       class="link-muted"><i class="bi bi-emoji-angry ms-2"></i></a>
+                                                    {% endif %}
+                                                </div>
+
+
+                                                <p class="small">{{comment.time_create}}</p>
+                                                <p>
+                                                    {{comment.comment}}
+                                                </p>
+
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <a href="/comment/{{comment.id}}/like?next={{ request.path }}"
+                                                           class="link-muted">
+                                                            <i class="fas fa-heart ms-2"></i>
+                                                            {{comment.number_of_likes}}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <nav class="d-flex justify-content-center">
+                                    <ul class="pagination ">
+
+                                        {% if page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a href="?page={{page_obj.previous_page_number}}">
+                                                    <span class="page-link">Previous</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Previous</span>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for i in page_range %}
+                                            {% if i != page_obj.paginator.ELLIPSIS %}
+                                                <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                                                    <a href="?page={{i}}" class="page-link">{{i}}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                   <span class="page-link">{{i}}</span>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+
+                                        {% if page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a href="?page={{page_obj.next_page_number}}">
+                                                    <span class="page-link">Next</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <span class="page-link">Next</span>
+                                            </li>
+                                        {% endif %}
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

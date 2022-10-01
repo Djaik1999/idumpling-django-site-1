@@ -1,0 +1,59 @@
+{% extends 'dumpling/base.html' %}
+
+{% block title %} Add Dumpling on Site {% endblock title %}
+
+{% block main %}
+
+<div class="form-content my-3 p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-lg mt-0 mb-3">
+                    <div class="card-header justify-content-center">
+                        <h3 class="font-weight-light my-1 text-center">Add Dumpling on Site</h3>
+                    </div>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show">
+                        {% for key, value in user_form.errors.items %}
+                            <strong class="mx-2">{{ value }}</strong>
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <form method="POST" , enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-error">{{ form.non_field_errors }}</div>
+
+
+                            {% for f in form %}
+                                <p><label for="{{f.id_for_label}}">{{f.label}}: </label> {{f}} </p>
+                                <div class="form-error">{{ f.errors }}</div>
+                            {% endfor %}
+
+                            <!--                            <p>{{ form.name }}</p>-->
+                            <!--                            <p>{{ form.meat }}</p>-->
+                            <!--                            <p>{{ form.tasty }}</p>-->
+                            <!--                            <p>{{ form.size }}</p>-->
+                            <!--                            <p class="form-control-file">{{ form.photo }}</p>-->
+                            <!--                            <p>{{ form.slug }}</p>-->
+
+
+                            <div class="form-group mt-4 mb-0">
+                                <button type="submit" class="col-md-12 btn btn-dark">Add Dumpling</button>
+                                <br><br>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

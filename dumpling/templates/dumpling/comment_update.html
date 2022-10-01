@@ -1,0 +1,71 @@
+{% extends 'dumpling/base.html' %}
+
+{% block title %} Add Dumpling on Site {% endblock title %}
+
+{% block main %}
+
+{% if user.is_authenticated %}
+<!-- List of comments -->
+
+<section style="background-color: #e7effd;">
+    <div class="container my-5 py-5 text-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <h4 class="text-center mb-4 pb-2">Comment{{ comments.count|pluralize }}
+                    <span class="badge bg-dark ml-2">{{ comments.count }}</span>
+                </h4>
+            </div>
+            <div class="col-md-11 col-lg-9 col-xl-7">
+
+                {% if user.is_authenticated %}
+                <!-- Form to leave comment -->
+                <div class="d-flex flex-start mb-4">
+                    <img class="rounded-circle shadow-1-strong me-3"
+                         src="{{user.profile.photo.url}}" alt="avatar" width="65"
+                         height="65"/>
+
+                    <div class="card w-100">
+                        <div class="card-body p-4">
+                            <div class="">
+                                <h5>{{user}}</h5>
+
+                                {% if form.errors %}
+                                <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show">
+                                    {% for key, value in user_form.errors.items %}
+                                        <strong class="mx-2">{{ value }}</strong>
+                                    {% endfor %}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                                {% endif %}
+
+
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <p class="small"></p>
+                                    <div class="form-error">{{ form.non_field_errors }}</div>
+                                    <p>
+                                        {{ form.comment }}
+                                    <div class="form-error">{{ f.errors }}</div>
+
+                                    </p>
+
+                                    <div class="float-end mt-2 pt-1">
+                                        <button type="submit" class="btn btn-primary btn-sm">Post
+                                            comment
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}
