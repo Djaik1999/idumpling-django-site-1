@@ -4,4 +4,6 @@ ipelmen_cache/
 
 */__pycache__/
 
+__pycache__/
+
 dumpling/tests.py

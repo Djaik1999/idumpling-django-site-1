@@ -2,13 +2,13 @@
 
 {% block title %}Profile Page{% endblock title %}
 
-{% block main%}
+{% block main %}
 
-<!-- NEW Version-->
 <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
-        <div class="col-lg-3 border-right">
 
+<!--First column-->
+        <div class="col-lg-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img class="rounded-circle mt-5" width="150px" src="{{user.profile.photo.url}}">
                 <span class="font-weight-bold">{{user.username}}
@@ -24,15 +24,17 @@
                                 <span style="color: rgba(255, 0, 21, 0.2)">ЧОРТ</span>
                             {% endif %}
                         {% endif %}
-                </span><span class="text-black-50">{{user.email}}</span>
+                </span>
+                <span class="text-black-50">{{user.email}}</span>
                 {% if user.is_superuser %}
-                <span class="badge bg-danger"> Administrator</span>
+                    <span class="badge bg-danger"> Administrator</span>
                 {% elif user.is_staff %}
-                <span class="badge bg-success"> Moderator</span>
+                    <span class="badge bg-success"> Moderator</span>
                 {% endif %}
             </div>
-
         </div>
+
+<!--        Second column-->
         <div class="col-lg-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -52,7 +54,7 @@
                     {% endif %}
 
                     <div class="row mt-2">
-                        <div class="col-md-12 mb-2"><label required=False class="labels">Логин</label>
+                        <div class="col-md-12 mb-2"><label class="labels">Логин</label>
                             {{ user_form.username }}
                         </div>
                         <div class="col-md-6 mb-2"><label class="labels">Имя</label>{{ profile_form.first_name }}</div>
@@ -77,14 +79,14 @@
                         <div class=" mb-2"><label class="labels">Номер паспорта</label>
                             {{ profile_form.passport_number }}
                         </div>
-                        <div class="col-md-12 mb-2"><label required=False class="labels">О себе</label>
+                        <div class="col-md-12 mb-2"><label class="labels">О себе</label>
                             {{ profile_form.bio }}
                         </div>
-                        <div class="col-md-12 mb-2"><label required=False class="labels">URL</label>
+                        <div class="col-md-12 mb-2"><label class="labels">URL</label>
                             {{ profile_form.slug }}
                         </div>
 
-                        <div class="col-md-12 mb-2" required=False><label class="labels">Сменить фотографию</label>
+                        <div class="col-md-12 mb-2"><label class="labels">Сменить фотографию</label>
                             {{ profile_form.photo }}
                         </div>
                     </div>
@@ -96,6 +98,8 @@
                 </form>
             </div>
         </div>
+
+<!--        Third column-->
         <div class="col-lg-4">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center experience">
@@ -161,6 +165,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

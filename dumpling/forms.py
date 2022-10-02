@@ -115,15 +115,6 @@ class UpdateUserForm(forms.ModelForm):
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(required=True,
                              widget=forms.TextInput(attrs={'class': 'form-control'}))
-    #
-    # def clean_username(self):
-    #     """
-    #     This function throws an exception if the username has already been
-    #     taken by another user
-    #     """
-    #
-    #     username  = self.cleaned_data['username']
-    #     if username !=
 
     class Meta:
         model = User
@@ -146,7 +137,8 @@ class UpdateProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['photo', 'first_name', 'last_name', 'slug', 'credit_card_number', 'cvc_code', 'address', 'where_key', 'passport_number', 'bio']
+        fields = ['photo', 'first_name', 'last_name', 'slug',
+                  'credit_card_number', 'cvc_code', 'address', 'where_key', 'passport_number', 'bio']
 
 
 class DumplingAddPostForm(forms.ModelForm):
@@ -170,6 +162,3 @@ class DumplingAddCommentForm(forms.ModelForm):
         widgets = {
             'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Комментарий', 'rows': '5'}),
         }
-
-
-

@@ -1,19 +1,15 @@
 {% extends 'dumpling/base.html' %}
 
-{% block title %} Add Dumpling on Site {% endblock title %}
+{% block title %} Edit comment {% endblock title %}
 
 {% block main %}
 
 {% if user.is_authenticated %}
-<!-- List of comments -->
-
 <section style="background-color: #e7effd;">
     <div class="container my-5 py-5 text-dark">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10 col-xl-8">
-                <h4 class="text-center mb-4 pb-2">Comment{{ comments.count|pluralize }}
-                    <span class="badge bg-dark ml-2">{{ comments.count }}</span>
-                </h4>
+                <h4 class="text-center mb-4 pb-2">Edit comment</h4>
             </div>
             <div class="col-md-11 col-lg-9 col-xl-7">
 
@@ -45,8 +41,7 @@
                                     <div class="form-error">{{ form.non_field_errors }}</div>
                                     <p>
                                         {{ form.comment }}
-                                    <div class="form-error">{{ f.errors }}</div>
-
+                                        <div class="form-error">{{ f.errors }}</div>
                                     </p>
 
                                     <div class="float-end mt-2 pt-1">
@@ -60,7 +55,6 @@
                     </div>
                 </div>
                 {% endif %}
-
 
             </div>
         </div>

@@ -1,6 +1,8 @@
 {% extends 'dumpling/base.html' %}
 {% load cache %}
 
+{% block title %}Пельмень {{dumpling}} {% endblock %}
+
 {% block main %}
 <div class="container-fluid px-0">
     <div class="row justify-content-center gx-0">
@@ -8,7 +10,7 @@
             <div class="card shadow-lg border-0 rounded-lg mt-0 mb-5">
 
                 {% if dumpling.photo %}
-                <img src="{{dumpling.photo.url}}" alt="" style="width: 100%">
+                    <img src="{{dumpling.photo.url}}" alt="{{dumpling}}" style="width: 100%">
                 {% endif %}
 
                 <table class="table mb-0">
@@ -34,15 +36,12 @@
 
 
                 <!-- List of comments -->
-
                 <section style="background-color: #e7effd;">
                     <div class="container my-5 py-5 text-dark">
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-12 col-lg-10 col-xl-8">
                                 <h4 class="text-center mb-4 pb-2">Comment{{ comments.count|pluralize }}
                                     <span class="badge bg-dark ml-2">{{ comments.count }}</span>
-
-
                                 </h4>
                             </div>
                             <div class="col-md-11 col-lg-9 col-xl-7">
@@ -61,7 +60,7 @@
                                                 {% if form.errors %}
                                                 <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show">
                                                     {% for key, value in user_form.errors.items %}
-                                                    <strong class="mx-2">{{ value }}</strong>
+                                                        <strong class="mx-2">{{ value }}</strong>
                                                     {% endfor %}
                                                     <button type="button" class="btn-close"
                                                             data-bs-dismiss="alert"></button>
@@ -74,12 +73,8 @@
                                                     <p class="small"></p>
                                                     <div class="form-error">{{ form.non_field_errors }}</div>
                                                     <p>
-
-                                                    <p>
-                                                        {{ form.comment }}
-                                                    </p>
-                                                    <div class="form-error">{{ f.errors }}</div>
-
+                                                        <p>{{ form.comment }}</p>
+                                                        <div class="form-error">{{ f.errors }}</div>
                                                     </p>
 
                                                     <div class="float-end mt-2 pt-1">
@@ -101,6 +96,7 @@
                                 {% if comments %}
                                 {% for comment in page_obj %}
                                 <div class="d-flex flex-start mb-4">
+<!--                                    Modal profile view-->
                                     <div id="profileModal{{comment.author.username}}" class="modal fade">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -121,7 +117,7 @@
                                                                 </div>
                                                                 <div class="flex-grow-1 ms-3">
                                                                     <h5 class="mb-1">{{comment.author.username}}</h5>
-                                                                    <p class="mb-2 pb-1" style="color: #2b2a2a;">
+                                                                    <p class="mb-2 pb-1">
                                                                         {{comment.author.profile.address}}
                                                                     </p>
                                                                     <hr>
@@ -136,26 +132,24 @@
                                         </div>
                                     </div>
 
-
                                     <a href="#profileModal{{comment.author.username}}" data-bs-toggle="modal">
                                         <img class="rounded-circle shadow-1-strong me-3"
                                              src="{{comment.author.profile.photo.url}}" alt="avatar" width="65"/>
                                     </a>
 
-
+<!--                                    Comment body-->
                                     <div class="card w-100">
                                         <div class="card-body p-4">
                                             <div class="">
-
 
                                                 <div class="d-flex align-items-center mb-3">
                                                     <p class="mb-0">
                                                     <h5 style="margin-right: 4px">{{comment.author}} </h5>
 
                                                     {% if comment.author.is_superuser %}
-                                                    <span class="badge bg-danger"> Administrator</span>
+                                                        <span class="badge bg-danger"> Administrator</span>
                                                     {% elif comment.author.is_staff %}
-                                                    <span class="badge bg-success"> Moderator</span>
+                                                        <span class="badge bg-success"> Moderator</span>
                                                     {% endif %}
 
                                                     <!--"Chort" status-->
@@ -179,7 +173,7 @@
                                                     <a href="{% url 'comment_delete' comment.id %}?next={{ request.path }}"
                                                        class="link-muted"><i
                                                             class="fas fa-trash-alt ms-2"></i></a>
-                                                    {% elif user.is_superuser %}
+                                                    {% elif user.is_staff %}
                                                     <a href="{% url 'comment_delete' comment.id %}?next={{ request.path }}"
                                                        class="link-muted"><i
                                                             class="fas fa-trash-alt ms-2"></i></a>
@@ -188,12 +182,10 @@
                                                     {% endif %}
                                                 </div>
 
-
                                                 <p class="small">{{comment.time_create}}</p>
-                                                <p>
-                                                    {{comment.comment}}
-                                                </p>
+                                                <p>{{comment.comment}}</p>
 
+<!--                                                Comment likes-->
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="d-flex align-items-center">
                                                         <a href="/comment/{{comment.id}}/like?next={{ request.path }}"
@@ -203,6 +195,7 @@
                                                         </a>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -210,6 +203,7 @@
                                 {% endfor %}
                                 {% endif %}
 
+<!--                                Pagination-->
                                 <nav class="d-flex justify-content-center">
                                     <ul class="pagination ">
 
@@ -237,7 +231,6 @@
                                             {% endif %}
                                         {% endfor %}
 
-
                                         {% if page_obj.has_next %}
                                             <li class="page-item">
                                                 <a href="?page={{page_obj.next_page_number}}">
@@ -252,6 +245,7 @@
 
                                     </ul>
                                 </nav>
+
                             </div>
                         </div>
                     </div>
@@ -260,8 +254,6 @@
             </div>
         </div>
     </div>
-
 </div>
-
 
 {% endblock %}

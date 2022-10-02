@@ -12,8 +12,6 @@
                         <h3 class="font-weight-light my-4 text-center">Create Account</h3>
                     </div>
 
-<!--                    TWO TYPES TO SHOW ERROR MESSAGE -->
-<!--                    FIRST:-->
                     {% if form.errors %}
                     <div class="alert alert-danger alert-dismissible d-flex align-items-center fade show" role="alert">
                         <div id="form_errors">
@@ -33,15 +31,6 @@
 
                             {% for f in form %}
                                 <p>{{ f }}</p>
-
-                            {% if f.required %}
-                                <p>*</p>    НЕ РАБОТАЕТ, НО НУЖНО РЕАЛИЗОВАТЬ
-                            {% endif %}
-
-                            {% if f.name == 'password' %}
-
-                            {% endif %}
-<!--                            SECOND:-->
                                 <div class="form-error">{{ f.errors }}</div>
                             {% endfor %}
 

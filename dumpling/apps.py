@@ -7,6 +7,3 @@ class DumplingConfig(AppConfig):
 
     # def ready(self):
     #     import dumpling.signals  # noqa
-
-
-

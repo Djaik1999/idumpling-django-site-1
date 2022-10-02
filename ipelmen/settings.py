@@ -24,10 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -126,7 +122,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
 
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.github.GithubOAuth2',  # НУЖЕН ЛИ? ГУГЛ РАБОТАЕТ И БЕЗ ЭТОГО
+    'social_core.backends.github.GithubOAuth2',
 )
 
 
@@ -171,7 +167,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = str(os.getenv('GOOGLE_SECRET'))
 SESSION_COOKIE_AGE = 60 * 60 * 24  # время жизни куки
 
 
-    # УЗНАТЬ ЗАЧЕМ !!!!!!!!!!!
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',

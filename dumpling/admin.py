@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import *
 
-# Register your models here.
 admin.site.register(Profile)
 
 
@@ -50,7 +49,6 @@ class DumplingCommentAdmin(admin.ModelAdmin):
         queryset.update(is_published=True)
 
     def ban_comment(self, request, queryset):
-        print(queryset)
         for comment in queryset:
             comment.author.profile.up_chort_status()
             comment.author.profile.save()

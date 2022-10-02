@@ -12,12 +12,11 @@ urlpatterns = [
 
     path('registration/', RegisterUser.as_view(), name='registration'),
     path('profile/<slug:profile_slug>', profile, name='user_profile'),
+
     path('comment/<int:pk>/like', dumpling_comment_like, name='comment_like'),
     path("comment/<int:pk>/delete", dumpling_comment_delete, name='comment_delete'),
     path("comment/<int:pk>/ban", dumpling_comment_ban, name='comment_ban'),
-
     path("comment/<int:pk>/update", DumplingCommentUpdateView.as_view(), name='comment_update'),
 
     path("about/", about, name="about")
-
 ]

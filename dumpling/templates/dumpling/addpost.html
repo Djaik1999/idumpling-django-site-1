@@ -28,19 +28,10 @@
 
                             <div class="form-error">{{ form.non_field_errors }}</div>
 
-
                             {% for f in form %}
                                 <p><label for="{{f.id_for_label}}">{{f.label}}: </label> {{f}} </p>
                                 <div class="form-error">{{ f.errors }}</div>
                             {% endfor %}
-
-                            <!--                            <p>{{ form.name }}</p>-->
-                            <!--                            <p>{{ form.meat }}</p>-->
-                            <!--                            <p>{{ form.tasty }}</p>-->
-                            <!--                            <p>{{ form.size }}</p>-->
-                            <!--                            <p class="form-control-file">{{ form.photo }}</p>-->
-                            <!--                            <p>{{ form.slug }}</p>-->
-
 
                             <div class="form-group mt-4 mb-0">
                                 <button type="submit" class="col-md-12 btn btn-dark">Add Dumpling</button>

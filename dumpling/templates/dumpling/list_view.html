@@ -1,5 +1,7 @@
 {% extends 'dumpling/base.html' %}
 
+{% block title %}Сортировка по категории{% endblock %}
+
 {% block main %}
 
 <div class="container-fluid my-3 p-3">
@@ -7,38 +9,37 @@
         <div class="col-lg-8">
 
             {% if dumplings %}
-            {% for el in dumplings %}
-            <div class="card shadow-lg border-0 rounded-lg mt-0 mb-5">
+                {% for el in dumplings %}
+                <div class="card shadow-lg border-0 rounded-lg mt-0 mb-5">
+                    <div class="card-title justify-content-center">
+                        <h2 class="detail-name">{{el.name}}</h2>
+                    </div>
 
-                <div class="card-title justify-content-center">
-                    <h2 class="detail-name">{{el.name}}</h2>
+                    {% if el.photo %}
+                    <img class="card-img-top" src="{{el.photo.url}}" alt="{{el.name}}">
+                    {% endif %}
+
+                    <a class="stretched-link" href="{{ el.get_absolute_url }}"></a>
+
+                    <table class="table mb-0">
+                        <tbody>
+                        <tr class="table-info">
+                            <td>Мясо</td>
+                            <td>{{ el.meat }}</td>
+                        </tr>
+                        <tr class="table-warning">
+                            <td>Вкусный?</td>
+                            <td>{{ el.tasty }}</td>
+                        </tr>
+                        <tr class="table-danger">
+                            <td>Размер</td>
+                            <td>{{ el.size }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                 </div>
-
-                {% if el.photo %}
-                <img class="card-img-top" src="{{el.photo.url}}" alt="{{el.name}}">
-                {% endif %}
-
-                <a class="stretched-link" href="{{ el.get_absolute_url }}"></a>
-
-                <table class="table mb-0">
-                    <tbody>
-                    <tr class="table-info">
-                        <td>Мясо</td>
-                        <td>{{ el.meat }}</td>
-                    </tr>
-                    <tr class="table-warning">
-                        <td>Вкусный?</td>
-                        <td>{{ el.tasty }}</td>
-                    </tr>
-                    <tr class="table-danger">
-                        <td>Размер</td>
-                        <td>{{ el.size }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-            {% endfor %}
+                {% endfor %}
             {% else %}
                 <h3 class="display-3 text-center">Таких пельменей нет</h3>
             {% endif %}
